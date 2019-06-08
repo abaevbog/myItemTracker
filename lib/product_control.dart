@@ -2,14 +2,12 @@ import 'package:flutter/material.dart';
 
 // Define a Custom Form Widget
 class MyCustomForm extends StatefulWidget {
-
   final Function addProduct;
   MyCustomForm(this.addProduct);
 
   @override
   _MyCustomFormState createState() => _MyCustomFormState(addProduct);
 }
-
 
 // Define a corresponding State class. This class will hold the data related to
 // our Form.
@@ -29,15 +27,23 @@ class _MyCustomFormState extends State<MyCustomForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Row (children: <Widget> [
-        RaisedButton(
-              onPressed: () { 
-                print(myController.text);
-                addProduct(myController.text);
-              },
-              child: Text("Button")),
-      Container(width: 250, height: 50 ,child: TextField(controller: myController, obscureText: false,
-        decoration: InputDecoration(border: OutlineInputBorder(), labelText: "Input:")),margin: EdgeInsets.all(10), )
-        ]);
+    return Row(children: <Widget>[
+      RaisedButton(
+          onPressed: () {
+            print(myController.text);
+            addProduct({"title": "Chocolate", "image": "assets/food.jpg"});
+          },
+          child: Text("Button")),
+      Container(
+        width: 250,
+        height: 50,
+        child: TextField(
+            controller: myController,
+            obscureText: false,
+            decoration: InputDecoration(
+                border: OutlineInputBorder(), labelText: "Input:")),
+        margin: EdgeInsets.all(10),
+      )
+    ]);
   }
 }
