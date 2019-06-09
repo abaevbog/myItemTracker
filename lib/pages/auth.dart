@@ -26,7 +26,9 @@ class AuthPageState extends State<AuthPage> {
             padding: EdgeInsets.all(10),
             child: Center(
                 child: SingleChildScrollView(
-                    child: Column(
+                    child: Container(
+                      width: MediaQuery.of(context).size.width*0.8,
+                      child: Column(
               children: <Widget>[
                 TextField(
                   decoration: InputDecoration(
@@ -66,6 +68,6 @@ class AuthPageState extends State<AuthPage> {
                   },
                 )
               ],
-            )))));
+            ))))));
   }
 }

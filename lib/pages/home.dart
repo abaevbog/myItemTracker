@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import '../products_manager.dart';
-
+import '../models.dart';
 
 class HomePage extends StatelessWidget{
-  final List<Map<String,dynamic>> products;
+  final List<Item> products;
   final Function addProduct;
   final Function deleteProduct;
 
@@ -17,6 +17,7 @@ class HomePage extends StatelessWidget{
             AppBar(title: Text("Choose"),
             automaticallyImplyLeading: false,),
             ListTile(
+              leading: Icon(Icons.settings),
               title: Text("Manage products"),
               onTap: () {
                 Navigator.pushReplacementNamed(context,"/admin");

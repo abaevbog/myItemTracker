@@ -22,6 +22,7 @@ class ProductSetting extends StatelessWidget {
                   automaticallyImplyLeading: false,
                 ),
                 ListTile(
+                  leading: Icon(Icons.shopping_cart),
                   title: Text("All products"),
                   onTap: () {
                     Navigator.pushReplacementNamed(context, '/home');

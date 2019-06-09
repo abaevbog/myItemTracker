@@ -6,6 +6,7 @@ import './pages/product_setting.dart';
 import './pages/home.dart';
 import './pages/product.dart';
 import 'package:flutter/rendering.dart';
+import './models.dart';
 
 class MyApp extends StatefulWidget {
   @override
@@ -15,9 +16,9 @@ class MyApp extends StatefulWidget {
 }
 
 class MyAppState extends State<MyApp> {
-  List<Map<String, dynamic>> _products = [];
+  List<Item> _products = [];
 
-  void _addProduct(Map<String, dynamic> product) {
+  void _addProduct(Item product) {
     setState(() {
       _products.add(product);
     });
@@ -32,7 +33,12 @@ class MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-//      home: AuthPage(),
+      theme: ThemeData(
+        brightness: Brightness.light,
+        primarySwatch: Colors.deepOrange,
+        accentColor: Colors.orangeAccent,
+        buttonColor: Colors.deepPurple,
+      ),
       routes: {
         "/admin": (ctx) => ProductSetting(_addProduct, this._deleteProduct),
         "/home": (ctx) => HomePage(_products, _addProduct, _deleteProduct),
@@ -46,8 +52,7 @@ class MyAppState extends State<MyApp> {
         if (pathEls[1] == 'product') {
           final int index = int.parse(pathEls[2]);
           return MaterialPageRoute<bool>(
-              builder: (BuildContext context) => ProductPage(
-                  _products[index]["title"], _products[index]["image"]));
+              builder: (BuildContext context) => ProductPage(_products[index]));
         }
         return null;
       },

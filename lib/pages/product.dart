@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-
+import '../models.dart';
 class ProductPage extends StatelessWidget {
-  final String title;
-  final String imageUrl;
+  final Item item;
 
-  ProductPage(this.title, this.imageUrl);
+  ProductPage(this.item);
 
   Future _showDialog(BuildContext context) {
     return showDialog(
@@ -41,15 +40,21 @@ class ProductPage extends StatelessWidget {
         },
         child: Scaffold(
             appBar: AppBar(
-              title: Text(title),
+              title: Text(item.title),
             ),
             body: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Container(
                     padding: EdgeInsets.all(10.0),
-                    child: Image.asset(imageUrl)),
-                Container(padding: EdgeInsets.all(10.0), child: Text(title)),
+                    child: Image.asset(item.imageUrl)),
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  padding: EdgeInsets.all(10),
+                  child:Text(item.description, style: TextStyle(fontSize: 25, fontStyle: FontStyle.italic),
+                  )),
                 RaisedButton(
                     color: Theme.of(context).accentColor,
                     child: Text("Delete"),

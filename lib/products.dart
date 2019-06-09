@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import './pages/product.dart';
+import './models.dart';
 
 class Products extends StatelessWidget {
-  final List<Map<String, dynamic>> products;
+  final List<Item> products;
 
   Products(this.products);
 
@@ -10,7 +10,7 @@ class Products extends StatelessWidget {
     return Card(
         child: Column(
       children: <Widget>[
-        Image.asset(products[index]["image"]),
+        Image.asset(products[index].imageUrl),
         Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           Container(
             padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
@@ -18,7 +18,7 @@ class Products extends StatelessWidget {
               borderRadius: BorderRadius.circular(5),
             ),
             child: Text(
-              products[index]["title"],
+              products[index].title,
               style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
             ),
           ),
@@ -29,27 +29,35 @@ class Products extends StatelessWidget {
               borderRadius: BorderRadius.circular(5),
             ),
             child: Text(
-              products[index]["price"].toString(),
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
+              products[index].price.toString(),
+              style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
             ),
           ),
         ]),
-        DecoratedBox(child:
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 5,vertical: 2),
-            child: Text("Some more details")
-          ),
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey),
-            borderRadius: BorderRadius.circular(4),
-        )),
+        DecoratedBox(
+            child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+                child: Text("Some more details")),
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey),
+              borderRadius: BorderRadius.circular(4),
+            )),
         ButtonBar(
           alignment: MainAxisAlignment.center,
           children: <Widget>[
-            FlatButton(
-                child: Text("Details"),
+            IconButton(
+                color: Colors.blue,
+                icon: Icon(Icons.info),
                 onPressed: () => Navigator.pushNamed<bool>(
-                    context, '/product/' + index.toString()))
+                    context, '/product/' + index.toString())),
+            IconButton(
+              color: Colors.red,
+              icon: Icon(Icons.favorite),
+              onPressed: () {},
+            )
           ],
         )
       ],
