@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import '../products_manager.dart';
-import './product_setting.dart';
 
 
 class HomePage extends StatelessWidget{
-  final List<Map<String,String>> products;
+  final List<Map<String,dynamic>> products;
   final Function addProduct;
   final Function deleteProduct;
 
@@ -28,7 +27,7 @@ class HomePage extends StatelessWidget{
         appBar: AppBar(
           title: Text("Kuku"),
         ),
-        body: ProductManager(products,addProduct,deleteProduct),    
+        body: ProductManager(products),    
       );
       
   }

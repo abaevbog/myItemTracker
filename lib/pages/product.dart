@@ -7,6 +7,31 @@ class ProductPage extends StatelessWidget {
 
   ProductPage(this.title, this.imageUrl);
 
+  Future _showDialog(BuildContext context) {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+              title: Text("Are you sure?"),
+              content: Text("Delete the item"),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text("Yes"),
+                  onPressed: () {
+                    Navigator.pop(context);
+                    Navigator.pop(context, true);
+                  },
+                ),
+                FlatButton(
+                  child: Text("No"),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                )
+              ]);
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -28,7 +53,7 @@ class ProductPage extends StatelessWidget {
                 RaisedButton(
                     color: Theme.of(context).accentColor,
                     child: Text("Delete"),
-                    onPressed: () => Navigator.pop(context, true))
+                    onPressed: () => _showDialog(context))
               ],
             )));
   }
