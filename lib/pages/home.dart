@@ -4,10 +4,15 @@ import './product_setting.dart';
 
 
 class HomePage extends StatelessWidget{
+  final List<Map<String,String>> products;
+  final Function addProduct;
+  final Function deleteProduct;
+
+  HomePage(this.products,this.addProduct,this.deleteProduct);
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold (
+    return Scaffold (
         drawer: Drawer(
           child: Column(children: <Widget>[
             AppBar(title: Text("Choose"),
@@ -15,9 +20,7 @@ class HomePage extends StatelessWidget{
             ListTile(
               title: Text("Manage products"),
               onTap: () {
-                Navigator.pushReplacement(context, MaterialPageRoute(
-                  builder: (BuildContext context) => ProductSetting()
-                ));
+                Navigator.pushReplacementNamed(context,"/admin");
               },
             )
           ],),
@@ -25,9 +28,9 @@ class HomePage extends StatelessWidget{
         appBar: AppBar(
           title: Text("Kuku"),
         ),
-        body: ProductManager({"title":"Chocolate","image": "assets/food.jpg"}),    
-      )
+        body: ProductManager(products,addProduct,deleteProduct),    
       );
+      
   }
   
 }

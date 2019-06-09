@@ -19,10 +19,7 @@ class ProductSetting extends StatelessWidget {
                 ListTile(
                   title: Text("All products"),
                   onTap: () {
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (BuildContext context) => HomePage()));
+                    Navigator.pushReplacementNamed(context, '/');
                   },
                 )
               ],

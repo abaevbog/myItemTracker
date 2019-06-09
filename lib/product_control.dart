@@ -30,7 +30,6 @@ class _MyCustomFormState extends State<MyCustomForm> {
     return Row(children: <Widget>[
       RaisedButton(
           onPressed: () {
-            print(myController.text);
             addProduct({"title": "Chocolate", "image": "assets/food.jpg"});
           },
           child: Text("Button")),
