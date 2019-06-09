@@ -5,6 +5,7 @@ import './pages/auth.dart';
 import './pages/product_setting.dart';
 import './pages/home.dart';
 import './pages/product.dart';
+import 'package:flutter/rendering.dart';
 
 class MyApp extends StatefulWidget {
   @override
@@ -59,4 +60,7 @@ class MyAppState extends State<MyApp> {
   }
 }
 
-void main() => runApp(MyApp());
+void main() {
+  debugPaintSizeEnabled=false;
+  runApp(MyApp());
+  }
