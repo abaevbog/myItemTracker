@@ -11,6 +11,54 @@ class AuthPageState extends State<AuthPage> {
   String username = '';
   String password = '';
   bool switchVal = false;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  Widget buildUsername() {
+    return TextFormField(
+      validator: (String entered) {
+        if (entered.isEmpty) {
+          return "Username is required";
+        } else {
+          return entered.split('@').length != 2 || entered.split('.').length < 2
+              ? "Invalid email format"
+              : null;
+        }
+      },
+      decoration: InputDecoration(
+          fillColor: Colors.white, filled: true, labelText: "Username"),
+      onSaved: (String str) {
+        username = str;
+      },
+    );
+  }
+
+  Widget buildPassword() {
+    return TextFormField(
+      obscureText: true,
+      validator: (String entered) {
+        if (entered.isEmpty) {
+          return "Password required";
+        }
+        return entered.length < 6 ? "Too short password" : null;
+      },
+      decoration: InputDecoration(
+        fillColor: Colors.white,
+        filled: true,
+        labelText: "Password",
+      ),
+      onSaved: (String str) {
+        password = str;
+      },
+    );
+  }
+
+  void _submit() {
+    _formKey.currentState.save();
+    if (!_formKey.currentState.validate()){
+      return;
+    }
+    Navigator.pushReplacementNamed(context, "/home");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,47 +75,30 @@ class AuthPageState extends State<AuthPage> {
             child: Center(
                 child: SingleChildScrollView(
                     child: Container(
-                      width: MediaQuery.of(context).size.width*0.8,
-                      child: Column(
-              children: <Widget>[
-                TextField(
-                  decoration: InputDecoration(
-                   fillColor: Colors.white,
-                   filled: true,
-                    labelText: "Username"),
-                  onChanged: (String str) {
-                    username = str;
-                  },
-                ),
-                SizedBox(height: 10,),
-                TextField(
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    fillColor: Colors.white,
-                    filled: true,
-                    labelText: "Password",
-                  ),
-                  onChanged: (String str) {
-                    password = str;
-                  },
-                ),
-                SwitchListTile(
-                  value: switchVal,
-                  onChanged: (bool value) {
-                    setState(() {
-                      switchVal = !switchVal;
-                    });
-                  },
-                  title: Text("Accept something"),
-                ),
-                RaisedButton(
-                  child: Text("Login"),
-                  onPressed: () {
-                    print("$username and $password");
-                    Navigator.pushReplacementNamed(context, '/home');
-                  },
-                )
-              ],
-            ))))));
+                        width: MediaQuery.of(context).size.width * 0.8,
+                        child: Form(
+                          key: _formKey,
+                            child: Column(
+                          children: <Widget>[
+                            buildUsername(),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            buildPassword(),
+                            SwitchListTile(
+                              value: switchVal,
+                              onChanged: (bool value) {
+                                setState(() {
+                                  switchVal = !switchVal;
+                                });
+                              },
+                              title: Text("Accept something"),
+                            ),
+                            RaisedButton(
+                              child: Text("Login"),
+                              onPressed: () => _submit(),
+                            )
+                          ],
+                        )))))));
   }
 }

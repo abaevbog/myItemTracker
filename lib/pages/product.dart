@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import '../models.dart';
-class ProductPage extends StatelessWidget {
-  final Item item;
+import "../scoped_models.dart";
+import 'package:scoped_model/scoped_model.dart';
 
-  ProductPage(this.item);
+class ProductPage extends StatelessWidget {
+  final int index;
+
+  ProductPage(this.index);
 
   Future _showDialog(BuildContext context) {
     return showDialog(
@@ -38,7 +41,10 @@ class ProductPage extends StatelessWidget {
           Navigator.pop(context, false);
           return Future.value(false);
         },
-        child: Scaffold(
+        child: ScopedModelDescendant(
+          builder: (BuildContext context, Widget child, ProductsScopedModel model) {
+          Item item = model.products[index];
+          return Scaffold(
             appBar: AppBar(
               title: Text(item.title),
             ),
@@ -60,6 +66,6 @@ class ProductPage extends StatelessWidget {
                     child: Text("Delete"),
                     onPressed: () => _showDialog(context))
               ],
-            )));
-  }
+            ));})
+    );}
 }

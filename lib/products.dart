@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import './models.dart';
+import "./scoped_models.dart";
+import 'package:scoped_model/scoped_model.dart';
 
 class Products extends StatelessWidget {
-  final List<Item> products;
-
-  Products(this.products);
-
-  Widget _buildProductItem(BuildContext context, int index) {
+  Widget _buildProductItem(BuildContext context, int index,List<Item> products) {
+    print("build product item");
     return Card(
         child: Column(
       children: <Widget>[
@@ -64,15 +63,34 @@ class Products extends StatelessWidget {
     ));
   }
 
+  Function buildConnector(List<Item> products){
+    print("build connector");
+    return (BuildContext context, int index) => _buildProductItem(context,index,products);
+  }
+
+  Widget constructItems( List<Item> products) {
+    print("construct items");
+    return products.length > 0
+        ? Column(children: [
+            Expanded(
+                child: ListView.builder(
+              itemBuilder: buildConnector(products),
+              itemCount: products.length,
+            ))
+          ])
+        : Column(children: [
+            Expanded(
+                child: Center(
+              child: Text("No products found"),
+            ))
+          ]);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return products.length > 0
-        ? ListView.builder(
-            itemBuilder: _buildProductItem,
-            itemCount: products.length,
-          )
-        : Center(
-            child: Text("No products found"),
-          );
+    return ScopedModelDescendant<ProductsScopedModel>(builder: (BuildContext context,Widget child, ProductsScopedModel model){
+      print("building products");
+      return constructItems(model.products);
+    },);
   }
 }

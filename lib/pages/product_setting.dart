@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
-import './home.dart';
 import './product_create.dart';
 import './product_list.dart';
-
+import '../models.dart';
 class ProductSetting extends StatelessWidget {
-  Function addProduct;
-  Function deleteProduct;
-
-  ProductSetting(this.addProduct, this.deleteProduct);
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +41,7 @@ class ProductSetting extends StatelessWidget {
           body: Center(
             child: TabBarView(
               children: <Widget>[
-                ProductCreatePage(addProduct),
+                ProductCreatePage(),
                 ProductListPage()
               ],
             ),
