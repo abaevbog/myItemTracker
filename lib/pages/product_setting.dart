@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import './product_create.dart';
 import './product_list.dart';
-import '../models.dart';
 class ProductSetting extends StatelessWidget {
 
   @override

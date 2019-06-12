@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:udemy_app/scoped_models/main.dart';
 import '../models.dart';
-import "../scoped_models.dart";
 import 'package:scoped_model/scoped_model.dart';
 
 class ProductCreatePage extends StatefulWidget {
@@ -18,7 +18,7 @@ class ProductCreatePageState extends State<ProductCreatePage> {
   double price = 0;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  Widget _buildTitle({Item product }) {
+  Widget _buildTitle({Item product}) {
     return TextFormField(
       initialValue: product != null ? product.title : "",
       decoration: InputDecoration(labelText: "Product title"),
@@ -34,7 +34,7 @@ class ProductCreatePageState extends State<ProductCreatePage> {
     );
   }
 
-  Widget _buildDescription({Item product }) {
+  Widget _buildDescription({Item product}) {
     return TextFormField(
       initialValue: product != null ? product.description : "",
       decoration: InputDecoration(labelText: "Product description"),
@@ -63,15 +63,13 @@ class ProductCreatePageState extends State<ProductCreatePage> {
     return true;
   }
 
-  Widget _buildPrice({Item product }) {
+  Widget _buildPrice({Item product}) {
     return TextFormField(
-      initialValue:
-          product != null ? product.price.toString() : "",
+      initialValue: product != null ? product.price.toString() : "",
       decoration: InputDecoration(labelText: "Price"),
       keyboardType: TextInputType.number,
       validator: (String entered) {
         var answer = !isNumeric(entered) ? "Valid price is required" : null;
-        print(answer);
         return answer;
       },
       onSaved: (String val) {
@@ -82,66 +80,68 @@ class ProductCreatePageState extends State<ProductCreatePage> {
     );
   }
 
-  void _submit(Function addProduct, Function updateProduct, Item selected) {
+  void _submit(Function addProduct, Function updateProduct,Item selected, User user, Function selectProduct) {
     _formKey.currentState.save();
     if (!_formKey.currentState.validate()) {
       return;
     }
-    final Item product = Item(titleVal, description, "assets/food.jpg", price);
     if (selected == null) {
-      addProduct(product);
+      addProduct(titleVal, description, "assets/food.jpg", price);
     } else {
-      updateProduct( product);
+      updateProduct(titleVal, description, "assets/food.jpg", price);
     }
-    Navigator.pushReplacementNamed(context, "/home");
+    Navigator.pushReplacementNamed(context, "/home").then((_)=>selectProduct(null));
   }
 
   Widget submitButton() {
-    return ScopedModelDescendant<ProductsScopedModel>(builder: 
-    (BuildContext context,Widget child, ProductsScopedModel model){
-      return RaisedButton(
-        color: Theme.of(context).accentColor,
-        child: Text("Save"),
-        onPressed: () => _submit(model.addProduct, model.updateProduct, model.selectedProduct)
-    ); },);
+    return ScopedModelDescendant<MainModel>(
+      builder: (BuildContext context, Widget child, MainModel model) {
+        return RaisedButton(
+            color: Theme.of(context).accentColor,
+            child: Text("Save"),
+            onPressed: () => _submit(
+                model.addProduct, model.updateProduct,model.selectedProduct, model.authenticatedUser, model.selectProduct));
+      },
+    );
   }
 
-  Widget buildPageContent({Item product }){
-        return Container(
-        margin: EdgeInsets.all(10.0),
-        child: GestureDetector(
-            onTap: () {
-              FocusScope.of(context).requestFocus(FocusNode());
-            },
-            child: Form(
-                key: _formKey,
-                child: ListView(
-                  children: <Widget>[
-                    _buildTitle(product: product),
-                    _buildDescription(product: product),
-                    _buildPrice(product :product),
-                    SizedBox(
-                      height: 10.0,
-                    ),
-                    submitButton()
-                  ],
-                ))));
+  Widget buildPageContent(User user, {Item product}) {
+    return Container(
+      margin: EdgeInsets.all(10.0),
+      child: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).requestFocus(FocusNode());
+        },
+        child: Form(
+          key: _formKey,
+          child: ListView(
+            children: <Widget>[
+              _buildTitle(product: product),
+              _buildDescription(product: product),
+              _buildPrice(product: product),
+              SizedBox(
+                height: 10.0,
+              ),
+              submitButton()
+            ],
+          ),
+        ),
+      ),
+    );
   }
-
 
   @override
   Widget build(BuildContext context) {
-
-    return ScopedModelDescendant(
-          builder: (BuildContext context, Widget child, ProductsScopedModel model) {
-            return model.index == null
-        ? buildPageContent()
-        : Scaffold(
-            appBar: AppBar(
-              title: Text("Edit product"),
-            ),
-            body: buildPageContent(product:model.selectedProduct),
-          );
-          });
+    return ScopedModelDescendant(builder:
+        (BuildContext context, Widget child, MainModel model) {
+      return model.index == null
+          ? buildPageContent(model.authenticatedUser)
+          :Scaffold(
+              appBar: AppBar(
+                title: Text("Edit product"),
+              ),
+              body: buildPageContent(model.authenticatedUser, product: model.selectedProduct),
+        );
+    });
   }
 }

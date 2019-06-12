@@ -7,7 +7,8 @@ import './pages/home.dart';
 import './pages/product.dart';
 import 'package:flutter/rendering.dart';
 import 'package:scoped_model/scoped_model.dart';
-import './scoped_models.dart';
+import './scoped_models/main.dart';
+
 class MyApp extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -20,7 +21,7 @@ class MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return ScopedModel<ProductsScopedModel>(child:MaterialApp(
+    return ScopedModel<MainModel>(child:MaterialApp(
       theme: ThemeData(
         brightness: Brightness.light,
         primarySwatch: Colors.deepOrange,
@@ -29,8 +30,8 @@ class MyAppState extends State<MyApp> {
       ),
       routes: {
         "/admin": (ctx) => ProductSetting(),
-        "/": (ctx) => HomePage(),
-        "/auth": (ctx) => AuthPage(),
+        "/home": (ctx) => HomePage(),
+        "/": (ctx) => AuthPage(),
       },
       onGenerateRoute: (RouteSettings settings) {
         final List<String> pathEls = settings.name.split('/');
@@ -49,7 +50,7 @@ class MyAppState extends State<MyApp> {
             builder: (BuildContext context) =>
                 HomePage());
       },
-    ),model: ProductsScopedModel());
+    ),model: MainModel());
   }
 }
 

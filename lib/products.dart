@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:udemy_app/scoped_models/main.dart';
 import './models.dart';
-import "./scoped_models.dart";
 import 'package:scoped_model/scoped_model.dart';
 
 class Products extends StatelessWidget {
-  Widget _buildProductItem(BuildContext context, int index,List<Item> products) {
-    print("build product item");
+  Widget _buildProductItem(
+      BuildContext context, int index, List<Item> products) {
     return Card(
         child: Column(
       children: <Widget>[
@@ -37,13 +37,14 @@ class Products extends StatelessWidget {
           ),
         ]),
         DecoratedBox(
-            child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-                child: Text("Some more details")),
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey),
-              borderRadius: BorderRadius.circular(4),
-            )),
+          child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+              child: Text(products[index].userEmail)),
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey),
+            borderRadius: BorderRadius.circular(4),
+          ),
+        ),
         ButtonBar(
           alignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -52,24 +53,31 @@ class Products extends StatelessWidget {
                 icon: Icon(Icons.info),
                 onPressed: () => Navigator.pushNamed<bool>(
                     context, '/product/' + index.toString())),
-            IconButton(
-              color: Colors.red,
-              icon: Icon(Icons.favorite),
-              onPressed: () {},
-            )
+            ScopedModelDescendant<MainModel>(
+                builder: (BuildContext context, Widget child, MainModel model) {
+              return IconButton(
+                color: Colors.red,
+                icon: Icon(model.products[index].isFavorite
+                    ? Icons.favorite
+                    : Icons.favorite_border),
+                onPressed: () {
+                  model.selectProduct(index);
+                  model.changeFavoriteStatus();
+                },
+              );
+            }),
           ],
         )
       ],
     ));
   }
 
-  Function buildConnector(List<Item> products){
-    print("build connector");
-    return (BuildContext context, int index) => _buildProductItem(context,index,products);
+  Function buildConnector(List<Item> products) {
+    return (BuildContext context, int index) =>
+        _buildProductItem(context, index, products);
   }
 
-  Widget constructItems( List<Item> products) {
-    print("construct items");
+  Widget constructItems(List<Item> products) {
     return products.length > 0
         ? Column(children: [
             Expanded(
@@ -88,9 +96,10 @@ class Products extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScopedModelDescendant<ProductsScopedModel>(builder: (BuildContext context,Widget child, ProductsScopedModel model){
-      print("building products");
-      return constructItems(model.products);
-    },);
+    return ScopedModelDescendant<MainModel>(
+      builder: (BuildContext context, Widget child, MainModel model) {
+        return constructItems(model.displayProducts);
+      },
+    );
   }
 }

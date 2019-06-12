@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:udemy_app/scoped_models/main.dart';
 import 'dart:async';
 import '../models.dart';
-import "../scoped_models.dart";
 import 'package:scoped_model/scoped_model.dart';
 
 class ProductPage extends StatelessWidget {
@@ -42,7 +42,7 @@ class ProductPage extends StatelessWidget {
           return Future.value(false);
         },
         child: ScopedModelDescendant(
-          builder: (BuildContext context, Widget child, ProductsScopedModel model) {
+          builder: (BuildContext context, Widget child, MainModel model) {
           Item item = model.products[index];
           return Scaffold(
             appBar: AppBar(
