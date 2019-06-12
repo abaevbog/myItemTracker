@@ -9,7 +9,7 @@ class Products extends StatelessWidget {
     return Card(
         child: Column(
       children: <Widget>[
-        Image.asset(products[index].imageUrl),
+        Image.network(products[index].imageUrl),
         Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           Container(
             padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),

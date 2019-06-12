@@ -1,6 +1,8 @@
 import 'package:scoped_model/scoped_model.dart';
 import 'package:udemy_app/scoped_models/connected_model.dart';
 import '../models.dart';
+import 'package:http/http.dart' as client;
+import 'dart:convert';
 
 mixin ProductsScopedModel on ConnectedProducts {
   
@@ -30,7 +32,7 @@ mixin ProductsScopedModel on ConnectedProducts {
 
   void updateProduct(String title,String description, String imageUrl, double price, {bool favInput}) {
     final product = products[selectedProductIndex];
-    Item updated = Item(title, description,imageUrl, price,product.userEmail, product.userId, isFavorite: favInput ==null? product.isFavorite: favInput);  
+    Item updated = Item(title, description,imageUrl, price,product.userEmail, product.userId,product.uid, isFavorite: favInput ==null? product.isFavorite: favInput);  
     productsList[selectedProductIndex] = updated;
      notifyListeners();
   }
@@ -46,6 +48,23 @@ mixin ProductsScopedModel on ConnectedProducts {
   void changeFavoritesDisplay(){
     showFavorites = !showFavorites;
     notifyListeners();
+  }
+
+  void fetchFromFirebase(){
+    client.get('https://productlist-6065d.firebaseio.com/products.json').then((resp){
+      Map<String,dynamic> response = json.decode(resp.body);
+      final List<Item> items = [];
+      print(response);
+      response.forEach((String key,dynamic data ){
+        Item newItem = Item(data['title'], data['description'], data['imageUrl'], data['price'],
+          data['email'], data['userId'],key);
+        items.add(newItem);
+      });   
+      productsList = items;
+      notifyListeners();
+    }
+      
+    );
   }
 
   List<Item> get displayProducts{

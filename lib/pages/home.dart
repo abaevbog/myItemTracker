@@ -3,7 +3,26 @@ import 'package:udemy_app/scoped_models/main.dart';
 import '../products.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  MainModel model;
+  HomePage(this.model);
+  @override
+  State<StatefulWidget> createState() {
+    return HomePageState();
+  }
+
+
+
+}
+
+class HomePageState extends State<HomePage>{
+
+  @override
+  void initState() {
+    widget.model.fetchFromFirebase();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
