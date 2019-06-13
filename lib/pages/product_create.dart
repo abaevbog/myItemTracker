@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:udemy_app/scoped_models/main.dart';
+import 'package:listTracker/scoped_models/main.dart';
 import '../models.dart';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -86,8 +86,19 @@ class ProductCreatePageState extends State<ProductCreatePage> {
       return;
     }
     if (selected == null) {
-      addProduct(titleVal, description, "assets/food.jpg", price).then((_){
-        Navigator.pushReplacementNamed(context, "/home").then((_)=>selectProduct(null));
+      addProduct(titleVal, description, "assets/food.jpg", price).then((bool success){
+        if (success){
+          Navigator.pushReplacementNamed(context, "/home").then((_)=>selectProduct(null));
+        } else{
+          showDialog(context: context, builder: (BuildContext context){ 
+            return AlertDialog(title: Text("Request failed"), actions: <Widget>[
+              FlatButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text("Ok")
+              )
+            ],);
+          } );
+        }
       });
     } else {
       updateProduct(titleVal, description, "assets/food.jpg", price).then((_){

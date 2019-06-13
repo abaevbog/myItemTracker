@@ -1,4 +1,4 @@
-package com.example.udemy_app;
+package com.example.listTracker;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;

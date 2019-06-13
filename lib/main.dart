@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:udemy_app/pages/product.dart';
-import 'package:udemy_app/pages/product_setting.dart';
+import 'package:listTracker/pages/product.dart';
+import 'package:listTracker/pages/product_setting.dart';
 import './pages/auth.dart';
 import './pages/product_setting.dart';
 import './pages/home.dart';

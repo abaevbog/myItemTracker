@@ -8,7 +8,7 @@ mixin ConnectedProducts on Model {
   User authenticatedUser;
   int selectedProductIndex;
   bool isLoading = false;
-  Future<Null> addProduct(
+  Future<bool> addProduct(
       String title, String description, String imageUrl, double price) {
     isLoading = true;
     notifyListeners();
@@ -18,6 +18,7 @@ mixin ConnectedProducts on Model {
       "price": price,
       "email":authenticatedUser.email,
       "userId": authenticatedUser.id,
+      "favorite": false,
       "imageUrl":
           "https://uiaa-web.azureedge.net/wp-content/uploads/2017/12/2018_banner.jpg"  };
 
@@ -25,12 +26,14 @@ mixin ConnectedProducts on Model {
         .post('https://productlist-6065d.firebaseio.com/products.json',
             body: json.encode(forJson))
         .then((resp) {
-      print("in then");
+      if (resp.statusCode != 201 && resp.statusCode != 200){
+        return false ;
+      }
       Map<String, dynamic> response = json.decode(resp.body);
       if(response == null){
         isLoading = false;
         notifyListeners();
-        return;
+        return true;
       }
       Item newItem = Item(title, description, imageUrl, price,
           authenticatedUser.email, authenticatedUser.id, response['name']);
@@ -38,6 +41,12 @@ mixin ConnectedProducts on Model {
       selectedProductIndex = null;
       isLoading = false;
       notifyListeners();
+      return true;
+    }).catchError((error){
+      isLoading = false;
+      selectedProductIndex = null;
+      notifyListeners();
+      return false;
     });
   }
 }

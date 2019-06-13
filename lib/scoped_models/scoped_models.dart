@@ -1,5 +1,5 @@
 import 'package:scoped_model/scoped_model.dart';
-import 'package:udemy_app/scoped_models/connected_model.dart';
+import 'package:listTracker/scoped_models/connected_model.dart';
 import '../models.dart';
 import 'package:http/http.dart' as client;
 import 'dart:convert';
@@ -26,33 +26,40 @@ mixin ProductsScopedModel on ConnectedProducts {
     notifyListeners();
   }
 
-  void deleteProduct() {
+  Future<dynamic>deleteProduct() {
     final product = products[selectedProductIndex];
     productsList.removeAt(selectedProductIndex);
     selectedProductIndex = null;
     isLoading = true;
     notifyListeners();
-    client
+    return client
         .delete(
             'https://productlist-6065d.firebaseio.com/products/${product.uid}.json')
         .then((_) {
       isLoading = false;
       notifyListeners();
+      return true;
+    }).catchError((error){
+      isLoading = false;
+      notifyListeners();
+      return false;
     });
   }
 
-  Future<Null> updateProduct(
+  Future<dynamic> updateProduct(
       String title, String description, String imageUrl, double price,
       {bool favInput}) {
     isLoading = true;
     notifyListeners();
     final product = products[selectedProductIndex];
+    favInput = favInput ==null? false:favInput;
     final Map<String, dynamic> updated = {
       "title": title,
       "description": description,
       "price": price,
       "email": authenticatedUser.email,
       "userId": authenticatedUser.id,
+      "favorite": favInput,
       "imageUrl":
           "https://uiaa-web.azureedge.net/wp-content/uploads/2017/12/2018_banner.jpg"
     };
@@ -68,7 +75,13 @@ mixin ProductsScopedModel on ConnectedProducts {
       productsList[selectedProductIndex] = updatedItem;
       notifyListeners();
       isLoading = false;
+      selectedProductIndex = null;
       notifyListeners();
+    }).catchError((error){
+      isLoading = false;
+      selectedProductIndex = null;
+      notifyListeners();
+      return false;
     });
   }
 
@@ -87,10 +100,10 @@ mixin ProductsScopedModel on ConnectedProducts {
     notifyListeners();
   }
 
-  void fetchFromFirebase() {
+  Future<dynamic> fetchFromFirebase() {
     isLoading = true;
     notifyListeners();
-    client
+    return client
         .get('https://productlist-6065d.firebaseio.com/products.json')
         .then((resp) {
       Map<String, dynamic> response = json.decode(resp.body);
@@ -109,12 +122,17 @@ mixin ProductsScopedModel on ConnectedProducts {
             data['price'],
             data['email'],
             data['userId'],
-            key);
+            key, isFavorite: data['favorite']);
         items.add(newItem);
       });
       productsList = items;
       isLoading = false;
+      selectedProductIndex = null;
       notifyListeners();
+    }).catchError((error){
+      isLoading = false;
+      notifyListeners();
+      return false;
     });
   }
 

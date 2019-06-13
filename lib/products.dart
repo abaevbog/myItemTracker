@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:udemy_app/scoped_models/main.dart';
+import 'package:listTracker/scoped_models/main.dart';
 import './models.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class Products extends StatelessWidget {
+
   Widget _buildProductItem(
       BuildContext context, int index, List<Item> products) {
     return Card(
         child: Column(
       children: <Widget>[
-        Image.network(products[index].imageUrl),
+        FadeInImage(
+          image: NetworkImage(products[index].imageUrl),
+          height: 300,
+          fit: BoxFit.cover,
+          placeholder: AssetImage('assets/loading.gif') ),
         Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           Container(
             padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
@@ -98,13 +103,15 @@ class Products extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScopedModelDescendant<MainModel>(
       builder: (BuildContext context, Widget child, MainModel model) {
+        Widget result = Center(child:Text("No items"));
         if (model.displayProducts.length > 0 && !model.isLoading){
-          return constructItems(model.displayProducts);
+          result = constructItems(model.displayProducts);
         } else if (model.isLoading){
-          return Center(child:CircularProgressIndicator());
-        } else{
-          return SizedBox(width: 0,height: 0);
-        }
+          result= Center(child:CircularProgressIndicator());
+        } 
+        return RefreshIndicator(
+          onRefresh: model.fetchFromFirebase
+        ,child: result,);
       },
     );
   }

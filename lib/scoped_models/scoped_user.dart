@@ -1,5 +1,5 @@
 import 'package:scoped_model/scoped_model.dart';
-import 'package:udemy_app/scoped_models/connected_model.dart';
+import 'package:listTracker/scoped_models/connected_model.dart';
 import '../models.dart';
 
 mixin UserModel on ConnectedProducts{

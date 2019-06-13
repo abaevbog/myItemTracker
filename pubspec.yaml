@@ -1,4 +1,4 @@
-name: udemy_app
+name: listTracker
 description: A new Flutter project.
 
 # The following defines the version and build number for your application.
@@ -45,6 +45,7 @@ flutter:
   assets:
     - assets/food.jpg
     - assets/background.jpg
+    - assets/loading.gif
   #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

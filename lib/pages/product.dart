@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:udemy_app/scoped_models/main.dart';
+import 'package:listTracker/scoped_models/main.dart';
 import 'dart:async';
 import '../models.dart';
 import 'package:scoped_model/scoped_model.dart';
