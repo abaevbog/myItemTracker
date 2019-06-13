@@ -3,7 +3,26 @@ import './product_create.dart';
 import "../scoped_models/main.dart";
 import 'package:scoped_model/scoped_model.dart';
 
-class ProductListPage extends StatelessWidget {
+class ProductListPage extends StatefulWidget {
+  MainModel model;
+
+  ProductListPage(this.model);
+  @override
+  State<StatefulWidget> createState() {
+    return ProductListState();
+  }
+
+
+}
+class ProductListState extends State<ProductListPage>{
+
+  @override
+  void initState() {
+    widget.model.fetchFromFirebase();
+    super.initState();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant(builder:
@@ -15,7 +34,7 @@ class ProductListPage extends StatelessWidget {
             key: Key(model.products[index].title),
             onDismissed: (DismissDirection dir) {
               model.selectProduct(index);
-              model.deleteProduct(index);
+              model.deleteProduct();
             },
             child: Column(children: [
               ListTile(

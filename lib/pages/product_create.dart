@@ -86,17 +86,22 @@ class ProductCreatePageState extends State<ProductCreatePage> {
       return;
     }
     if (selected == null) {
-      addProduct(titleVal, description, "assets/food.jpg", price);
+      addProduct(titleVal, description, "assets/food.jpg", price).then((_){
+        Navigator.pushReplacementNamed(context, "/home").then((_)=>selectProduct(null));
+      });
     } else {
-      updateProduct(titleVal, description, "assets/food.jpg", price);
+      updateProduct(titleVal, description, "assets/food.jpg", price).then((_){
+        Navigator.pushReplacementNamed(context, "/home").then((_)=>selectProduct(null));
+      });
     }
-    Navigator.pushReplacementNamed(context, "/home").then((_)=>selectProduct(null));
   }
 
   Widget submitButton() {
     return ScopedModelDescendant<MainModel>(
       builder: (BuildContext context, Widget child, MainModel model) {
-        return RaisedButton(
+        return model.isLoading? 
+          Center(child:CircularProgressIndicator())
+          : RaisedButton(
             color: Theme.of(context).accentColor,
             child: Text("Save"),
             onPressed: () => _submit(

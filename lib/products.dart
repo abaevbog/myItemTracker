@@ -98,7 +98,13 @@ class Products extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScopedModelDescendant<MainModel>(
       builder: (BuildContext context, Widget child, MainModel model) {
-        return constructItems(model.displayProducts);
+        if (model.displayProducts.length > 0 && !model.isLoading){
+          return constructItems(model.displayProducts);
+        } else if (model.isLoading){
+          return Center(child:CircularProgressIndicator());
+        } else{
+          return SizedBox(width: 0,height: 0);
+        }
       },
     );
   }

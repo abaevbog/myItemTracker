@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import './product_create.dart';
 import './product_list.dart';
+import "../scoped_models/main.dart";
+import 'package:scoped_model/scoped_model.dart';
 class ProductSetting extends StatelessWidget {
+  MainModel model;
 
+  ProductSetting(this.model);
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -41,7 +45,7 @@ class ProductSetting extends StatelessWidget {
             child: TabBarView(
               children: <Widget>[
                 ProductCreatePage(),
-                ProductListPage()
+                ProductListPage(model)
               ],
             ),
           ),

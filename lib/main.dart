@@ -30,7 +30,7 @@ class MyAppState extends State<MyApp> {
         buttonColor: Colors.deepPurple,
       ),
       routes: {
-        "/admin": (ctx) => ProductSetting(),
+        "/admin": (ctx) => ProductSetting(model),
         "/home": (ctx) => HomePage(model),
         "/": (ctx) => AuthPage(),
       },
