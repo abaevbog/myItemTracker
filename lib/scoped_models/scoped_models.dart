@@ -100,7 +100,7 @@ mixin ProductsScopedModel on ConnectedProducts {
     notifyListeners();
   }
 
-  Future<dynamic> fetchFromFirebase() {
+  Future<dynamic> fetchFromFirebase({bool forMyList = false}) {
     isLoading = true;
     notifyListeners();
     return client
@@ -123,7 +123,13 @@ mixin ProductsScopedModel on ConnectedProducts {
             data['email'],
             data['userId'],
             key, isFavorite: data['favorite']);
-        items.add(newItem);
+        if (forMyList){
+          if(data['userId'] == authenticatedUser.id){
+          items.add(newItem);
+          } 
+        } else{
+          items.add(newItem);
+        }
       });
       productsList = items;
       isLoading = false;

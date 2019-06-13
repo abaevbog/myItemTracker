@@ -4,7 +4,7 @@ import "../scoped_models/main.dart";
 import 'package:scoped_model/scoped_model.dart';
 
 class ProductListPage extends StatefulWidget {
-  MainModel model;
+  final MainModel model;
 
   ProductListPage(this.model);
   @override
@@ -18,7 +18,7 @@ class ProductListState extends State<ProductListPage>{
 
   @override
   void initState() {
-    widget.model.fetchFromFirebase();
+    widget.model.fetchFromFirebase(forMyList: true);
     super.initState();
   }
 
@@ -27,7 +27,8 @@ class ProductListState extends State<ProductListPage>{
   Widget build(BuildContext context) {
     return ScopedModelDescendant(builder:
         (BuildContext context, Widget child, MainModel model) {
-      return ListView.builder(
+      return model.isLoading ? Center(child: CircularProgressIndicator())   
+      : ListView.builder(
         itemBuilder: (BuildContext context, int index) {
           return Dismissible(
             background: Container(color: Colors.red),

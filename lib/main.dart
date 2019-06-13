@@ -25,14 +25,14 @@ class MyAppState extends State<MyApp> {
     return ScopedModel<MainModel>(child:MaterialApp(
       theme: ThemeData(
         brightness: Brightness.light,
-        primarySwatch: Colors.deepOrange,
-        accentColor: Colors.orangeAccent,
+        primarySwatch: Colors.blue,
+        accentColor: Colors.blueAccent,
         buttonColor: Colors.deepPurple,
       ),
       routes: {
         "/admin": (ctx) => ProductSetting(model),
         "/home": (ctx) => HomePage(model),
-        "/": (ctx) => AuthPage(),
+        "/": (ctx) => AuthPage(model),
       },
       onGenerateRoute: (RouteSettings settings) {
         final List<String> pathEls = settings.name.split('/');
