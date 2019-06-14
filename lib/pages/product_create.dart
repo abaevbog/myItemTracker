@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:listTracker/scoped_models/main.dart';
 import '../models.dart';
 import 'package:scoped_model/scoped_model.dart';
-
+import './locationForm.dart';
 class ProductCreatePage extends StatefulWidget {
   ProductCreatePage();
 
@@ -16,6 +16,7 @@ class ProductCreatePageState extends State<ProductCreatePage> {
   String titleVal = '';
   String description = '';
   double price = 0;
+  String address = '';
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   Widget _buildTitle({Item product}) {
@@ -63,6 +64,13 @@ class ProductCreatePageState extends State<ProductCreatePage> {
     return true;
   }
 
+  void setAddress(String receivedAddress){
+    setState(() {
+      print("received $receivedAddress");
+      address = receivedAddress;
+    });
+  }
+
   Widget _buildPrice({Item product}) {
     return TextFormField(
       initialValue: product != null ? product.price.toString() : "",
@@ -86,7 +94,8 @@ class ProductCreatePageState extends State<ProductCreatePage> {
       return;
     }
     if (selected == null) {
-      addProduct(titleVal, description, "assets/food.jpg", price).then((bool success){
+      print("adding");
+      addProduct(titleVal, description, "assets/food.jpg",address, price).then((bool success){
         if (success){
           Navigator.pushReplacementNamed(context, "/home").then((_)=>selectProduct(null));
         } else{
@@ -101,7 +110,7 @@ class ProductCreatePageState extends State<ProductCreatePage> {
         }
       });
     } else {
-      updateProduct(titleVal, description, "assets/food.jpg", price).then((_){
+      updateProduct(titleVal, description, "assets/food.jpg",address, price).then((_){
         Navigator.pushReplacementNamed(context, "/home").then((_)=>selectProduct(null));
       });
     }
@@ -135,9 +144,9 @@ class ProductCreatePageState extends State<ProductCreatePage> {
               _buildTitle(product: product),
               _buildDescription(product: product),
               _buildPrice(product: product),
-              SizedBox(
-                height: 10.0,
-              ),
+              SizedBox(height: 10.0,),
+              LocationInput(setAddress),
+              SizedBox(height: 10.0,),
               submitButton()
             ],
           ),

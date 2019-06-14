@@ -9,7 +9,7 @@ mixin ConnectedProducts on Model {
   int selectedProductIndex;
   bool isLoading = false;
   Future<bool> addProduct(
-      String title, String description, String imageUrl, double price) {
+      String title, String description, String imageUrl,String address, double price) {
     isLoading = true;
     notifyListeners();
     Map<String, dynamic> forJson = {
@@ -19,6 +19,7 @@ mixin ConnectedProducts on Model {
       "email":authenticatedUser.email,
       "userId": authenticatedUser.id,
       "favorite": false,
+      "address":address,
       "imageUrl":
           "https://uiaa-web.azureedge.net/wp-content/uploads/2017/12/2018_banner.jpg"  };
 
@@ -36,7 +37,7 @@ mixin ConnectedProducts on Model {
         return true;
       }
       Item newItem = Item(title, description, imageUrl, price,
-          authenticatedUser.email, authenticatedUser.id, response['name']);
+          authenticatedUser.email, authenticatedUser.id,address, response['name']);
       productsList.add(newItem);
       selectedProductIndex = null;
       isLoading = false;

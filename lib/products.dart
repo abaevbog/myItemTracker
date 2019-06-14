@@ -50,6 +50,7 @@ class Products extends StatelessWidget {
             borderRadius: BorderRadius.circular(4),
           ),
         ),
+        Text("from: ${products[index].address}"),
         ButtonBar(
           alignment: MainAxisAlignment.center,
           children: <Widget>[
