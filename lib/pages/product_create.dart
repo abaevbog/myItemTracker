@@ -3,6 +3,9 @@ import 'package:listTracker/scoped_models/main.dart';
 import '../models.dart';
 import 'package:scoped_model/scoped_model.dart';
 import './locationForm.dart';
+import './imageInput.dart';
+import 'dart:io';
+
 class ProductCreatePage extends StatefulWidget {
   ProductCreatePage();
 
@@ -17,6 +20,7 @@ class ProductCreatePageState extends State<ProductCreatePage> {
   String description = '';
   double price = 0;
   String address = '';
+  File img;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   Widget _buildTitle({Item product}) {
@@ -71,6 +75,10 @@ class ProductCreatePageState extends State<ProductCreatePage> {
     });
   }
 
+  void setImg(File pic){
+    img = pic;
+  }
+
   Widget _buildPrice({Item product}) {
     return TextFormField(
       initialValue: product != null ? product.price.toString() : "",
@@ -95,7 +103,7 @@ class ProductCreatePageState extends State<ProductCreatePage> {
     }
     if (selected == null) {
       print("adding");
-      addProduct(titleVal, description, "assets/food.jpg",address, price).then((bool success){
+      addProduct(titleVal, description, "assets/food.jpg",address,img, price).then((bool success){
         if (success){
           Navigator.pushReplacementNamed(context, "/home").then((_)=>selectProduct(null));
         } else{
@@ -147,7 +155,9 @@ class ProductCreatePageState extends State<ProductCreatePage> {
               SizedBox(height: 10.0,),
               LocationInput(setAddress),
               SizedBox(height: 10.0,),
-              submitButton()
+              ImageInput(setImg),
+              submitButton(),
+              SizedBox(height: 10.0,),
             ],
           ),
         ),
