@@ -1,4 +1,3 @@
-import 'package:scoped_model/scoped_model.dart';
 import 'package:listTracker/scoped_models/connected_model.dart';
 import '../models.dart';
 import 'package:http/http.dart' as client;
@@ -47,7 +46,7 @@ mixin ProductsScopedModel on ConnectedProducts {
   }
 
   Future<dynamic> updateProduct(
-      String title, String description, String imageUrl, double price,
+      String title, String description, String imageUrl, String address, double price,
       {bool favInput}) {
     isLoading = true;
     notifyListeners();
@@ -60,6 +59,7 @@ mixin ProductsScopedModel on ConnectedProducts {
       "email": authenticatedUser.email,
       "userId": authenticatedUser.id,
       "favorite": favInput,
+      "address": address,
       "imageUrl":
           "https://uiaa-web.azureedge.net/wp-content/uploads/2017/12/2018_banner.jpg"
     };
@@ -70,7 +70,7 @@ mixin ProductsScopedModel on ConnectedProducts {
             body: json.encode(updated))
         .then((resp) {
       Item updatedItem = Item(title, description, imageUrl, price,
-          product.userEmail, product.userId, product.uid,
+          product.userEmail, product.userId,address, product.uid,
           isFavorite: favInput == null ? product.isFavorite : favInput);
       productsList[selectedProductIndex] = updatedItem;
       notifyListeners();
@@ -90,7 +90,7 @@ mixin ProductsScopedModel on ConnectedProducts {
     final product = products[selectedProductIndex];
     bool current = product.isFavorite;
     updateProduct(
-        product.title, product.description, product.imageUrl, product.price,
+        product.title, product.description, product.imageUrl,product.address,product.price,
         favInput: !current);
     notifyListeners();
   }
@@ -122,7 +122,7 @@ mixin ProductsScopedModel on ConnectedProducts {
             data['price'],
             data['email'],
             data['userId'],
-            key, isFavorite: data['favorite']);
+            key, data['address'],isFavorite: data['favorite']);
         if (forMyList){
           if(data['userId'] == authenticatedUser.id){
           items.add(newItem);
