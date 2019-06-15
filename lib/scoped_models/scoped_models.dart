@@ -61,8 +61,7 @@ mixin ProductsScopedModel on ConnectedProducts {
       "userId": authenticatedUser.id,
       "favorite": favInput,
       "address" : address,
-      "imageUrl":
-          "https://uiaa-web.azureedge.net/wp-content/uploads/2017/12/2018_banner.jpg"
+      "imageUrl":imageUrl
     };
 
     return client
@@ -86,14 +85,27 @@ mixin ProductsScopedModel on ConnectedProducts {
     });
   }
 
-  void changeFavoriteStatus() {
+  void changeFavoriteStatus() async{
     print("change fav satus");
     final product = products[selectedProductIndex];
     bool current = product.isFavorite;
-    updateProduct(
-        product.title, product.description, product.imageUrl, product.address, product.price,
-        favInput: !current);
+    productsList[selectedProductIndex].isFavorite = !productsList[selectedProductIndex].isFavorite;
     notifyListeners();
+    bool favInput = current ==null? false: !current;
+
+    final Map<String, dynamic> updated = {
+      "title": product.title,
+      "description": product.description,
+      "price": product.price,
+      "email": authenticatedUser.email,
+      "userId": authenticatedUser.id,
+      "favorite": favInput,
+      "address" : product.address,
+      "imageUrl":product.imageUrl
+    };
+  client.put(
+            'https://productlist-6065d.firebaseio.com/products/${product.uid}.json',
+            body: json.encode(updated));
   }
 
   void changeFavoritesDisplay() {

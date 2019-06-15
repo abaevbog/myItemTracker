@@ -28,6 +28,7 @@ dependencies:
   firebase_auth: ^0.6.6
   image_picker: ^0.4.12
   firebase_storage: 
+#  url_launcher: ^3.0.3
     
 dev_dependencies:
   flutter_test:

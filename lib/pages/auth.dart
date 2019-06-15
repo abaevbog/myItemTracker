@@ -3,7 +3,7 @@ import 'package:scoped_model/scoped_model.dart';
 import '../scoped_models/main.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fb;
 
-class AuthPage extends StatefulWidget { 
+class AuthPage extends StatefulWidget {
   final MainModel model;
   AuthPage(this.model);
   final fb.FirebaseAuth auth = fb.FirebaseAuth.instance;
@@ -15,32 +15,33 @@ class AuthPage extends StatefulWidget {
 
 enum Mode { Login, SignUp }
 
-class AuthPageState extends State<AuthPage> {
+class AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
   String username = '';
   String password = '';
   Mode mode = Mode.Login;
   bool switchVal = false;
   String error = '';
+  AnimationController _controller;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController passwordCont = TextEditingController();
 
-  @override 
-  void initState(){
+  @override
+  void initState() {
     super.initState();
-    try{
-      
-      widget.auth.currentUser().then((usr){
-        if (usr != null){
-          widget.model.login(usr.email,usr.uid);
+    _controller =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 300));
+    try {
+      widget.auth.currentUser().then((usr) {
+        if (usr != null) {
+          widget.model.login(usr.email, usr.uid);
           Navigator.pushReplacementNamed(context, "/home");
         }
       });
-    }catch(e){
+    } catch (e) {
       print("something broke");
     }
   }
-
 
   Widget buildUsername() {
     return TextFormField(
@@ -83,24 +84,24 @@ class AuthPageState extends State<AuthPage> {
   }
 
   Widget buildPasswordConfirm() {
-    return mode == Mode.Login
-        ? SizedBox(width: 0, height: 0)
-        : TextFormField(
-            obscureText: true,
-            validator: (String entered) {
-              return entered == passwordCont.text
-                  ? null
-                  : "Passwords don't match";
-            },
-            decoration: InputDecoration(
-              fillColor: Colors.white,
-              filled: true,
-              labelText: "Repeat password",
-            ),
-            onSaved: (String str) {
-              password = str;
-            },
-          );
+    return FadeTransition(
+      opacity: CurvedAnimation(
+          parent: _controller, curve: Interval(0.0, 1.0, curve: Curves.easeIn)),
+      child: TextFormField(
+        obscureText: true,
+        validator: (String entered) {
+          return entered == passwordCont.text || mode != Mode.SignUp ? null : "Passwords don't match";
+        },
+        decoration: InputDecoration(
+          fillColor: Colors.white,
+          filled: true,
+          labelText: "Repeat password",
+        ),
+        onSaved: (String str) {
+          password = str;
+        },
+      ),
+    );
   }
 
   void _submit(Function login) async {
@@ -128,11 +129,12 @@ class AuthPageState extends State<AuthPage> {
         );
       }
     } else {
-      try{
-        var usr = await widget.auth.createUserWithEmailAndPassword(email: username, password: password);
+      try {
+        var usr = await widget.auth.createUserWithEmailAndPassword(
+            email: username, password: password);
         login(username, usr.uid);
         Navigator.pushReplacementNamed(context, "/home");
-      }catch(e){
+      } catch (e) {
         AlertDialog(
           title: Text("Registration failed"),
           actions: <Widget>[
@@ -178,8 +180,13 @@ class AuthPageState extends State<AuthPage> {
                       onChanged: (bool value) {
                         setState(() {
                           switchVal = !switchVal;
-                          mode =
-                              (mode == Mode.Login ? Mode.SignUp : Mode.Login);
+                          if (mode == Mode.Login) {
+                            mode = Mode.SignUp;
+                            _controller.forward();
+                          } else {
+                            mode = Mode.Login;
+                            _controller.reverse();
+                          }
                         });
                       },
                       title: Text("Switch to " +

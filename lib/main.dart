@@ -8,6 +8,7 @@ import './pages/product.dart';
 import 'package:flutter/rendering.dart';
 import 'package:scoped_model/scoped_model.dart';
 import './scoped_models/main.dart';
+import './custom_route.dart';
 
 class MyApp extends StatefulWidget {
   @override
@@ -41,7 +42,7 @@ class MyAppState extends State<MyApp> {
         }
         if (pathEls[1] == 'product') {
           final int index = int.parse(pathEls[2]);
-          return MaterialPageRoute<bool>(
+          return CustomRoute<bool>(
               builder: (BuildContext context) => ProductPage(index));
         }
         return null;
