@@ -1,14 +1,26 @@
-A new Flutter project.
+An imitation of an online store listing of products built as an excercise to learn flutter.
+Main features:
+  authentication with firebase auth
+  adding new products and updating them, these actions are backed by firebase db and firestore
+  custom animated transitions, hero widgets, fade animations and slivers
+  general material design layout 
+  accessing camera/gallery to receive image
+  fetching info from google api
 
-## Getting Started
+Some screenshots:
+Login or signup 
+![Alt text](/screenshots/login_signup.png)
 
-This project is a starting point for a Flutter application.
+Create new product
+![Alt text](/screenshots/create.png)
 
-A few resources to get you started if this is your first Flutter project:
+Products from all users are displayed as a list of cards
+![Alt text](/screenshots/products.png)
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+User can update/delete their products 
+![Alt text](/screenshots/list.png)
 
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.dev/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+Details for each product with animated buttons and sliver app bar
+![Alt text](/screenshots/details.png)
+![Alt text](/screenshots/details_txt.png)
+
