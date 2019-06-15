@@ -1,12 +1,18 @@
 An imitation of an online store listing of products built as an excercise to learn flutter.
 Main features:
 
-  ..*authentication with firebase auth
-  ..*adding new products and updating them, these actions are backed by firebase db and firestore
-  ..*custom animated transitions, hero widgets, fade animations and slivers
-  ..*general material design layout 
-  ..*accessing camera/gallery to receive image
-  ..*fetching info from google api
+  authentication with firebase auth
+  
+  adding new products and updating them, these actions are backed by firebase db and firestore
+  
+  custom animated transitions, hero widgets, fade animations and slivers
+  
+  general material design layout 
+  
+  accessing camera/gallery to receive image
+  
+  fetching info from google api
+  
 
 Some screenshots:
 Login or signup 
