@@ -35,7 +35,7 @@ class ProductPage extends StatelessWidget {
                 delegate: SliverChildListDelegate([
                   Container(
                     alignment: Alignment.center,
-                    child: Text(item.address),),
+                    child: Text("from: ${item.address}"),),
                   Container(
                     decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(4),
